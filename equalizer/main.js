@@ -1,99 +1,99 @@
-const oneDay = 1000 * 60 * 60 * 24;
+/**
+ * @description Drawing sample equalizer chart. Shape of chart is based on static data and position.
+ * @author Junhohwang
+ */
 
 const now = new Date();
+
+/**
+ * @var start : First day of this year
+ * @var end : Last day of this year
+ * @var days : Total days of this year
+ */
 const start = new Date(now.getFullYear(), 0, 1);
 const end = new Date(now.getFullYear(), 12, 0);
-
 const diff = end - start;
-
+const oneDay = 1000 * 60 * 60 * 24; // millisecond, second, minute, hour
 const days = (diff / oneDay) + 1;
 
+/**
+ * @var rows : Equalizer rows
+ * @var columns : Equalizer columns
+ */
 const rows = 10;
 const columns = Math.ceil(days / 7);
 
-// console.log(now);
-console.log(start);
-// console.log(end);
-// console.log(diff);
-// console.log(days);
-// console.log(columns);
-
-// sample data = [2, 5, 4, 8, 11, 6]
-// let data = [[0, 0, 0, 0, 0, 0, 2],
-//             [1, 0, 0, 2, 1, 1, 0],
-//             [1, 0, 0, 1, 0, 2, 0],
-//             [2, 1, 2, 1, 0, 1, 1],
-//             [0, 3, 2, 0, 3, 1, 2],
-//             [1, 0, 0, 2, 1, 1, 1]];
-let data = [[0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 2],
-            [1, 0, 0, 2, 1, 1, 0],
-            [1, 0, 0, 1, 0, 2, 0],
-            [2, 1, 2, 1, 0, 1, 1],
-            [0, 3, 2, 0, 3, 1, 2],
-            [1, 0, 0, 2, 1, 1, 1]];
-
-const xmlns = 'http://www.w3.org/2000/svg'
-let container = document.getElementById('calendar-svg');
-
+/**
+ * @var isBurning : A threshold to select between two kinds of gradient CSS
+ * @var data : Sample data (48 columns)
+ */
 const isBurning = 7;
+const data = [[0, 0, 0, 0, 0, 0, 2],
+            [1, 0, 0, 2, 1, 1, 0],
+            [1, 0, 0, 1, 0, 2, 0],
+            [2, 1, 2, 1, 0, 1, 1],
+            [0, 3, 2, 0, 3, 1, 2],
+            [1, 0, 0, 2, 1, 1, 1],
+            [1, 0, 2, 2, 1, 0, 2],
+            [1, 0, 0, 2, 1, 1, 2],
+            [1, 2, 0, 2, 0, 2, 0],
+            [1, 1, 1, 1, 0, 1, 1],
+            [0, 1, 1, 0, 1, 1, 2],
+            [1, 0, 0, 2, 2, 2, 2],
+            [2, 2, 2, 2, 2, 2, 2],
+            [2, 2, 2, 2, 1, 1, 1],
+            [1, 0, 0, 1, 2, 2, 1],
+            [2, 1, 2, 1, 0, 1, 1],
+            [0, 1, 2, 0, 1, 1, 2],
+            [1, 0, 2, 2, 1, 1, 1],
+            [0, 0, 2, 2, 1, 0, 2],
+            [1, 0, 0, 1, 1, 1, 0],
+            [1, 0, 0, 1, 1, 1, 0],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 1, 1, 2],
+            [1, 0, 0, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 1, 1, 1, 0],
+            [1, 0, 0, 1, 0, 1, 0],
+            [1, 1, 1, 1, 0, 1, 1],
+            [0, 2, 2, 0, 2, 1, 2],
+            [1, 0, 0, 1, 1, 1, 1],
+            [0, 0, 0, 0, 1, 2, 2],
+            [1, 0, 0, 2, 2, 2, 2],
+            [1, 0, 0, 2, 0, 2, 0],
+            [2, 2, 2, 2, 0, 2, 2],
+            [0, 1, 1, 0, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 2],
+            [1, 0, 0, 0, 1, 1, 0],
+            [1, 0, 0, 1, 0, 0, 0],
+            [1, 1, 1, 1, 0, 1, 1],
+            [0, 1, 2, 0, 2, 1, 2],
+            [1, 0, 0, 2, 2, 2, 2],
+            [0, 0, 0, 1, 1, 1, 2],
+            [1, 0, 0, 0, 1, 1, 0],
+            [1, 0, 0, 1, 0, 1, 0],
+            [0, 1, 0, 1, 0, 1, 1],
+            [0, 2, 2, 0, 2, 1, 2],
+            [1, 0, 0, 1, 1, 1, 1]];
+
+const xmlns = 'http://www.w3.org/2000/svg';
+let container = document.getElementById('calendar-svg');
 
 for (let i = 0; i < columns; i ++) {
   let newGroup = document.createElementNS(xmlns, 'g');
   newGroup.setAttributeNS(null, 'transform', `translate(${16*i}, ${170})`);
 
-  let burningFlag = false;
+  let boxTag = 'basic';
   let burningPoint = 0;
 
-  // 샘플 데이터 부족으로 인덱스 에러로 인한 임시 조건문
+  // Check index boundary of data
   if (i < data.length) {
+    // Sum of each row in 2-dimension array
     burningPoint = data[i].reduce((sum, currValue) => {
       return sum + currValue;
     }, 0);
   }
-
-  let boxTag = 'basic';
 
   if (burningPoint != 0 && burningPoint < isBurning) {
     boxTag = 'n-lv';
@@ -164,8 +164,6 @@ for (let i = 0; i < columns; i ++) {
     newPixel.setAttributeNS(null, 'y', `${-15*j}`);
     newPixel.setAttributeNS(null, 'rx', '1');
     newPixel.setAttributeNS(null, 'ry', '1');
-
-    // console.log(newPixel);
 
     newGroup.appendChild(newPixel);
   }
